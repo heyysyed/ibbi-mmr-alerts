@@ -15,6 +15,7 @@ load_dotenv()
 
 IBBI_AUCTION_URL = "https://ibbi.gov.in/liquidation-auction-notices/lists"
 IBBI_PUBLIC_ANN_URL = "https://ibbi.gov.in/public-announcement"
+IBBI_RESOLUTION_PLANS_URL = "https://ibbi.gov.in/resolution-plans"
 BAANKNET_URL = "https://ibbi.baanknet.com/auction-listing"
 
 MMR_LOCATIONS = [
@@ -181,6 +182,7 @@ def run_pipeline() -> None:
         for fn, label in [
             (lambda: fetch_ibbi_table(IBBI_AUCTION_URL, "IBBI Liquidation Auction"), "IBBI Auctions"),
             (lambda: fetch_ibbi_table(IBBI_PUBLIC_ANN_URL, "IBBI Public Announcement / Resolution Plan"), "IBBI Public Announcements"),
+            (lambda: fetch_ibbi_table(IBBI_RESOLUTION_PLANS_URL, "IBBI Resolution Plan"), "IBBI Resolution Plans"),
             (fetch_baanknet_listings, "BAANKNET"),
         ]:
             try:
@@ -233,3 +235,4 @@ if __name__ == "__main__":
         send_test_message()
     else:
         run_pipeline()
+
