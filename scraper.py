@@ -212,5 +212,24 @@ def run_pipeline() -> None:
         conn.close()
 
 
+def send_test_message() -> None:
+    token = os.environ["TELEGRAM_BOT_TOKEN"]
+    chat_id = os.environ["TELEGRAM_CHAT_ID"]
+    resp = requests.post(
+        f"https://api.telegram.org/bot{token}/sendMessage",
+        json={
+            "chat_id": chat_id,
+            "text": "✅ Cloud Test Alert: GitHub Actions -> Telegram pipeline is live and working!",
+        },
+        timeout=20,
+    )
+    resp.raise_for_status()
+    print("Test Telegram message sent successfully.")
+
+
 if __name__ == "__main__":
-    run_pipeline()
+    import sys
+    if "--test" in sys.argv:
+        send_test_message()
+    else:
+        run_pipeline()

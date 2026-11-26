@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 */4 * * *"
   workflow_dispatch:
+    inputs:
+      send_test:
+        description: "Send a test Telegram message"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -24,7 +30,12 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python scraper.py
+        run: |
+          if [ "${{ github.event.inputs.send_test }}" == "true" ]; then
+            python scraper.py --test
+          else
+            python scraper.py
+          fi
 
       - name: Save updated alerts database
         run: |
